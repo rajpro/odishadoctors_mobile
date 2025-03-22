@@ -18,7 +18,7 @@ module.exports = {
             return res.status(500).json({ status: "error", message: "Internal server error", error: err.message });
         }
     },
-    getDoctor: async (req, res) => {
+    getAllDoctor: async (req, res) => {
         try {
             const { location, department, name } = req.query;
             let filter = {};
@@ -34,6 +34,26 @@ module.exports = {
             }
     
             return res.status(200).json({ message: 'Success', data: doctors_data});
+    
+        } catch (err) {
+            return res.status(500).json({ message: 'Error', error: err.message });
+        }
+    },
+    getDoctor: async (req, res) => {
+        try {
+            const { id } = req.body;
+    
+            if (!id) {
+                return res.status(400).json({ message: 'ID is required' });
+            }
+    
+            const doctor = await DoctorModel.findById(id);
+    
+            if (!doctor) {
+                return res.status(404).json({ message: 'Doctor not found' });
+            }
+    
+            return res.status(200).json({ message: 'Success', data: doctor });
     
         } catch (err) {
             return res.status(500).json({ message: 'Error', error: err.message });
