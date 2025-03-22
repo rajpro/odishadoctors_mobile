@@ -1,7 +1,7 @@
 const express = require('express');
 
 const{ registerUser, loginUser , getUsers} = require('../controller/authController');
-const{ addDoctor, getDoctor, updateDoctor} = require('../controller/doctorDetailsController');
+const{ addDoctor, getDoctor, getAllDoctor, updateDoctor} = require('../controller/doctorDetailsController');
 
 const { userRegisterValidate , userLoginValidate} = require('../utils/userValidation');
 
@@ -16,7 +16,8 @@ const jwtValidation = require('../utils/jwtValidation');
  routes.post('/getuser', jwtValidation, getUsers);
 
  routes.post('/add_doctor', jwtValidation, addDoctor);
- routes.post('/get_doctors', jwtValidation, getDoctor);11
+ routes.post('/get_all_doctors', jwtValidation, getAllDoctor);
+ routes.post('/get_doctor', jwtValidation, getDoctor);
  routes.post('/update_doctor', jwtValidation, updateDoctor);
  
 
