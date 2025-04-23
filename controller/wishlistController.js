@@ -1,4 +1,5 @@
 const WishlistModel = require("../models/WishlistModel");
+const DoctorModel = require("../models/DoctorModel");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -29,21 +30,23 @@ module.exports = {
     getWishlist: async (req, res) => {
         try {
             const { id } = req.body;
-    
             if (!id) {
                 return res.status(400).json({ message: 'ID is required' });
             }
-    
+
             const wishlist = await WishlistModel.findById(id);
-            
-    
             if (!wishlist) {
                 return res.status(404).json({ message: 'Wishlist not found' });
             }
+                const doctors_data = await DoctorModel.find({
+                    _id: { $in: wishlist.wishlist }
+                });
 
             return res.status(200).json({
                 message: 'Success',
-                data: wishlist
+                data: wishlist,
+                doctors_data: doctors_data
+
             });
     
         } catch (err) {
