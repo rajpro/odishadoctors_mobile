@@ -30,7 +30,7 @@ module.exports = {
             const doctors_data = await DoctorModel.find(filter);
     
             if (!doctors_data.length) {
-                return res.status(404).json({ message: 'No doctors found' });
+                return res.status(200).json({ message: 'No doctors found' });
             }
     
             return res.status(200).json({ message: 'Success', data: doctors_data});
