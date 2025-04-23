@@ -18,18 +18,18 @@ const jwtValidation = require('../utils/jwtValidation');
  routes.post('/getuser', jwtValidation, getUsers);
 
  routes.post('/add_doctor', jwtValidation, addDoctor);
- routes.post('/get_all_doctors', jwtValidation, getAllDoctor);
- routes.post('/get_doctor', jwtValidation, getDoctor);
+ routes.post('/get_all_doctors', getAllDoctor);
+ routes.post('/get_doctor', getDoctor);
  routes.post('/update_doctor', jwtValidation, updateDoctor);
 
  routes.post('/add_post', jwtValidation, addPost);
- routes.post('/get_all_post', jwtValidation, getAllPost);
- routes.post('/get_post', jwtValidation, getPost);
+ routes.post('/get_all_post', getAllPost);
+ routes.post('/get_post', getPost);
  routes.post('/update_post', jwtValidation, updatePost);
 
  routes.post('/add_comment', jwtValidation, addComment);
- routes.post('/get_all_comment', jwtValidation, getAllComment);
- routes.post('/get_comment', jwtValidation, getComment);
+ routes.post('/get_all_comment', getAllComment);
+ routes.post('/get_comment', getComment);
  routes.post('/update_comment', jwtValidation, updateComment);
 
 

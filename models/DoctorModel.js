@@ -13,7 +13,7 @@ const DoctorSchema = new Schema({
     },
     mobile: {
         type: String,
-        required: false
+        required: true
     },
     whatsapp_no: {
         type: String,
@@ -25,9 +25,13 @@ const DoctorSchema = new Schema({
     },
     region: {
         type: String,
-        required: true
+        required: false
     },
     visiting_details: {
+        type: Object,
+        required: true
+    },
+    address: {
         type: Object,
         required: true
     },
