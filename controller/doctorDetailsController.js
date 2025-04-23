@@ -20,7 +20,7 @@ module.exports = {
     },
     getAllDoctor: async (req, res) => {
         try {
-            const { location, department, name } = req.query;
+            const { location, department, name } = req.body;
             let filter = {};
     
             if (location) filter.region = location;
