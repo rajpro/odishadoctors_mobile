@@ -18,14 +18,14 @@ module.exports = {
             const post_data = await PostModel.aggregate([
                 {
                     $lookup: {
-                        from: "users", // The name of the user collection (check your actual collection name, e.g., "users")
+                        from: "users",
                         localField: "user_id",
                         foreignField: "_id",
                         as: "user_detail"
                     }
                 },
                 {
-                    $unwind: "$user_detail" // Optional: flattens the user_detail array to an object
+                    $unwind: "$user_detail"
                 }
             ]);
 
