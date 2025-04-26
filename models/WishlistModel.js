@@ -14,7 +14,7 @@ const WishlistSchema = new Schema({
             {
                 wl_type: {
                     type: String,
-                    enum: ["comments", "post"],
+                    enum: ["doctors", "posts"],
                     required: true
                 },
                 wl_id: {
