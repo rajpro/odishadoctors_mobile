@@ -3,7 +3,7 @@ const express = require('express');
 const{ registerUser, loginUser , getUsers} = require('../controller/authController');
 const{ addDoctor, getDoctor, getAllDoctor, updateDoctor} = require('../controller/doctorDetailsController');
 const{ addPost, getPost, getAllPost, updatePost, addComment, getComment, getAllComment, updateComment} = require('../controller/postController');
-const{ addWishlist, getWishlist, getAllWishlist, updateWishlist} = require('../controller/wishlistController');
+const{ addWishlist, getWishlist, getAllWishlist, updateWishlist, toggleWishlist} = require('../controller/wishlistController');
 
 const { userRegisterValidate , userLoginValidate} = require('../utils/userValidation');
 
@@ -37,6 +37,7 @@ const jwtValidation = require('../utils/jwtValidation');
  routes.post('/get_all_wishlist', jwtValidation, getAllWishlist);
  routes.post('/get_wishlist', jwtValidation, getWishlist);
  routes.post('/update_wishlist', jwtValidation, updateWishlist);
+ routes.post('/toggle_wishlist', jwtValidation, toggleWishlist);
 
 
  module.exports = routes;
