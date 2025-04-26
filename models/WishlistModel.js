@@ -1,15 +1,29 @@
-const { string, array } = require('joi');
+const { string, array, ref } = require('joi');
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
 const WishlistSchema = new Schema({
     user_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
         required: true
     },
     wishlist: {
-        type: [String],
+        type: [
+            {
+                wl_type: {
+                    type: String,
+                    enum: ["comments", "post"],
+                    required: true
+                },
+                wl_id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    required: true,
+                    refPath: 'wishlist.wl_type'
+                }
+            }
+        ],
         required: true
     },
     createdAt: {

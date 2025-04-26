@@ -5,21 +5,18 @@ const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema({
     user_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
         required: true
     },
     post_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "posts",
         required: true
     },
     comment: {
         type: String,
         required: true
-    },
-    file:{
-        type: String,
-        required: false,
-        default: null
     },
     createdAt: {
         type: Date,
