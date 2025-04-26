@@ -20,20 +20,23 @@ module.exports = {
     },
     getAllDoctor: async (req, res) => {
         try {
-            const { location, department, name } = req.body;
+            const { location, department, name, limit = 20, offset = 0 } = req.body;
             let filter = {};
     
             if (location) filter.region = location;
             if (department) filter.department = department;
             if (name) filter.name = { $regex: name, $options: "i" };
     
-            const doctors_data = await DoctorModel.find(filter);
+            const doctors_data = await DoctorModel.find(filter)
+                .sort({ _id: -1 })
+                .skip(parseInt(offset))
+                .limit(parseInt(limit));
     
             if (!doctors_data.length) {
-                return res.status(200).json({ message: 'No doctors found', data:[] });
+                return res.status(200).json({ message: 'No doctors found', data: [] });
             }
     
-            return res.status(200).json({ message: 'Success', data: doctors_data});
+            return res.status(200).json({ message: 'Success', data: doctors_data });
     
         } catch (err) {
             return res.status(500).json({ message: 'Error', error: err.message });
