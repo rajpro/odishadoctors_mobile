@@ -15,6 +15,7 @@ module.exports = {
     },
     getAllPost: async (req, res) => {
         try {
+            const { limit = 20, offset = 0 } = req.body;
             const post_data = await PostModel.aggregate([
                 {
                     $lookup: {
@@ -26,6 +27,15 @@ module.exports = {
                 },
                 {
                     $unwind: "$user_detail"
+                },
+                {
+                    $sort: { _id: -1 }
+                },
+                {
+                    $skip: parseInt(offset)
+                },
+                {
+                    $limit: parseInt(limit)
                 }
             ]);
 
