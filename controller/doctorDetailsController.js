@@ -26,11 +26,75 @@ module.exports = {
             if (location) filter.region = location;
             if (department) filter.department = department;
             if (name) filter.name = { $regex: name, $options: "i" };
-    
-            const doctors_data = await DoctorModel.find(filter)
-                .sort({ _id: -1 })
-                .skip(parseInt(offset))
-                .limit(parseInt(limit));
+            
+            let aggregationPipeline = [
+                { $match: filter },
+                { $sort: { _id: -1 } },
+                { $skip: parseInt(offset) },
+                { $limit: parseInt(limit) }
+            ];
+
+            if (req.user && req.user._id) {
+                aggregationPipeline.push(
+                    {
+                        $lookup: {
+                            from: "wishlists",
+                            let: {
+                                doctorId: "$_id",
+                                userId: mongoose.Types.ObjectId(req.user._id)
+                            },
+                            pipeline: [
+                                {
+                                    $match: {
+                                        $expr: {
+                                            $and: [
+                                                { $eq: ["$user_id", "$$userId"] }
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    $project: {
+                                        wishlist: {
+                                            $filter: {
+                                                input: "$wishlist",
+                                                as: "item",
+                                                cond: {
+                                                    $and: [
+                                                        { $eq: ["$$item.wl_type", "doctors"] },
+                                                        { $eq: ["$$item.wl_id", "$$doctorId"] }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                { $match: { "wishlist.0": { $exists: true } } },
+                                { $limit: 1 }
+                            ],
+                            as: "wishlistData"
+                        }
+                    },
+                    {
+                        $addFields: {
+                            wishlist: { $gt: [{ $size: "$wishlistData" }, 0] }
+                        }
+                    },
+                    {
+                        $project: {
+                            wishlistData: 0
+                        }
+                    }
+                );
+            } else {
+                // If no user, add wishlist:false manually
+                aggregationPipeline.push({
+                    $addFields: {
+                        wishlist: false
+                    }
+                });
+            }
+            const doctors_data = await DoctorModel.aggregate(aggregationPipeline);
     
             if (!doctors_data.length) {
                 return res.status(200).json({ message: 'No doctors found', data: [] });
