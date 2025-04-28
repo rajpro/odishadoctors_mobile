@@ -20,7 +20,7 @@ module.exports = {
     },
     getAllDoctor: async (req, res) => {
         try {
-            const { location, department, name, limit = 20, offset = 0 } = req.body;
+            const { user_id, location, department, name, limit = 20, offset = 0 } = req.body;
             let filter = {};
     
             if (location) filter.region = location;
@@ -34,14 +34,14 @@ module.exports = {
                 { $limit: parseInt(limit) }
             ];
 
-            if (req.user && req.user._id) {
+            if (user_id) {
                 aggregationPipeline.push(
                     {
                         $lookup: {
                             from: "wishlists",
                             let: {
                                 doctorId: "$_id",
-                                userId: mongoose.Types.ObjectId(req.user._id)
+                                userId: mongoose.Types.ObjectId(user_id)
                             },
                             pipeline: [
                                 {
