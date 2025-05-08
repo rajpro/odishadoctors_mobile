@@ -55,9 +55,9 @@ module.exports = {
             const { user_id } = req.body;
             let user;
             if(user_id){
-                const user = await UserModel.findOne({_id:user_id}, {password:0});
+                user = await UserModel.findOne({_id:user_id}, {password:0});
             }else{
-                const user = await UserModel.find({}, {password:0});
+                user = await UserModel.find({}, {password:0});
             }
             if (!user || (Array.isArray(user) && user.length === 0)) {
                 return res.status(404).json({ message: 'User not found' });
